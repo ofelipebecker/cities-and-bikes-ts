@@ -1,4 +1,4 @@
-const LAYER_KEYS = ['gas', 'parking', 'stores', 'toilets'] as const;
+export const LAYER_KEYS = ['gas', 'parking', 'stores', 'toilets'] as const;
 
 const layersLabelsPt = [
   'Postos de Combustível',

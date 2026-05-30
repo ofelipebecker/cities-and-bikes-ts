@@ -1,7 +1,11 @@
 import { Container, Image, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 import logo from '../../assets/images/logo-ctb-horizontal-dark-pt.svg';
+import { useLayersVisibility } from '../../store/layers-visibility-context.tsx';
+import { layersPt } from '../../shared/utils/mapLayers.ts';
 
 const MainNav = () => {
+  const { layerVisibility, setLayerVisibility } = useLayersVisibility();
+
   return (
     <Navbar expand={false} className='bg-cyan-500 shadow-1'>
       <Container fluid>
@@ -17,7 +21,12 @@ const MainNav = () => {
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav className='justify-content-end flex-grow-1 pe-3'>
-              <Nav.Link href='/'>Default</Nav.Link>
+              {Object.entries(layersPt).map(([key, label]) => (
+                <Nav.Link href='/' key={key}>
+                  {layerVisibility[key] && '✓ '}
+                  {label}
+                </Nav.Link>
+              ))}
             </Nav>
           </Offcanvas.Body>
         </Navbar.Offcanvas>

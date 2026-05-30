@@ -18,13 +18,8 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
-    "chart.js": "^4.5.1",
-    "chartjs-adapter-dayjs-4": "^1.0.4",
-    "chartjs-chart-treemap": "^3.1.0",
-    "dayjs": "^1.11.19",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
-    "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {

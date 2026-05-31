@@ -1,5 +1,7 @@
 export const LAYER_KEYS = ['gas', 'parking', 'stores', 'toilets'] as const;
 
+export type LayerKey = (typeof LAYER_KEYS)[number];
+
 const layersLabelsPt = [
   'Postos de Combustível',
   'Estacionamento',

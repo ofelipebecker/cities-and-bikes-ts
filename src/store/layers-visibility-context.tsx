@@ -10,8 +10,8 @@ const initialState: InitialState = Object.fromEntries(
 );
 
 type LayersVisibilityContextType = {
-  layerVisibility: InitialState;
-  setLayerVisibility: React.Dispatch<React.SetStateAction<InitialState>>;
+  layersVisibility: InitialState;
+  setLayersVisibility: React.Dispatch<React.SetStateAction<InitialState>>;
 };
 
 export const LayersVisibilityContext =
@@ -35,13 +35,13 @@ type LayersVisibilityContextProviderProps = {
 export default function LayersVisibilityContextProvider({
   children,
 }: LayersVisibilityContextProviderProps) {
-  const [layerVisibility, setLayerVisibility] = useState(() => {
+  const [layersVisibility, setLayersVisibility] = useState(() => {
     return initialState;
   });
 
   return (
     <LayersVisibilityContext.Provider
-      value={{ layerVisibility, setLayerVisibility }}
+      value={{ layersVisibility, setLayersVisibility }}
     >
       {children}
     </LayersVisibilityContext.Provider>

@@ -8,10 +8,10 @@ import {
 } from '../../shared/utils/mapLayers.ts';
 
 const LayersMenu = () => {
-  const { layerVisibility, setLayerVisibility } = useLayersVisibility();
+  const { layersVisibility, setLayersVisibility } = useLayersVisibility();
 
   function handleLayerVisibility(layerKey: LayerKey) {
-    setLayerVisibility((prev) => ({
+    setLayersVisibility((prev) => ({
       ...prev,
       [layerKey]: !prev[layerKey],
     }));
@@ -20,7 +20,7 @@ const LayersMenu = () => {
   return (
     <Form>
       {LAYERS.map((layer) => {
-        const visisbility = layerVisibility[layer];
+        const visisbility = layersVisibility[layer];
         const icon = layersIconsSrc[layer];
         const label = layersPt[layer];
 

@@ -2,7 +2,7 @@ import { Form, Image } from 'react-bootstrap';
 import { useLayersVisibility } from '../../store/layers-visibility-context.tsx';
 import {
   type LayerKey,
-  LAYER_KEYS,
+  LAYERS,
   layersPt,
   layersIconsSrc,
 } from '../../shared/utils/mapLayers.ts';
@@ -19,7 +19,7 @@ const LayersMenu = () => {
 
   return (
     <Form>
-      {LAYER_KEYS.map((layer) => {
+      {LAYERS.map((layer) => {
         const visisbility = layerVisibility[layer];
         const icon = layersIconsSrc[layer];
         const label = layersPt[layer];

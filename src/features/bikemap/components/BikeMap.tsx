@@ -15,10 +15,7 @@ const BikeMap = () => {
 
     const bikeMapInstance = new mapboxgl.Map({
       container: bikeMapContainerRef.current,
-      style: bikeMapConfig.style.url,
-      center: bikeMapConfig.center.coordinates,
-      zoom: bikeMapConfig.center.zoom,
-      maxBounds: bikeMapConfig.bounds.maxBounds,
+      ...bikeMapConfig,
     });
 
     bikeMapRef.current = bikeMapInstance;

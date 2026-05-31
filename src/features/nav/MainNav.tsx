@@ -1,10 +1,21 @@
-import { Container, Image, Nav, Navbar, Offcanvas } from 'react-bootstrap';
+import { Container, Form, Image, Navbar, Offcanvas } from 'react-bootstrap';
 import logo from '../../assets/images/logo-ctb-horizontal-dark-pt.svg';
 import { useLayersVisibility } from '../../store/layers-visibility-context.tsx';
-import { layersPt } from '../../shared/utils/mapLayers.ts';
+import {
+  type LayerKey,
+  LAYER_KEYS,
+  layersPt,
+} from '../../shared/utils/mapLayers.ts';
 
 const MainNav = () => {
   const { layerVisibility, setLayerVisibility } = useLayersVisibility();
+
+  function handleLayerVisibility(layerKey: LayerKey) {
+    setLayerVisibility((prev) => ({
+      ...prev,
+      [layerKey]: !prev[layerKey],
+    }));
+  }
 
   return (
     <Navbar expand={false} className='bg-cyan-500 shadow-1'>
@@ -20,14 +31,17 @@ const MainNav = () => {
             </Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <Nav className='justify-content-end flex-grow-1 pe-3'>
-              {Object.entries(layersPt).map(([key, label]) => (
-                <Nav.Link href='/' key={key}>
-                  {layerVisibility[key] && '✓ '}
-                  {label}
-                </Nav.Link>
+            <Form>
+              {LAYER_KEYS.map((key) => (
+                <Form.Check
+                  type='switch'
+                  checked={layerVisibility[key]}
+                  key={`switch-${key}`}
+                  label={layersPt[key]}
+                  onChange={() => handleLayerVisibility(key)}
+                />
               ))}
-            </Nav>
+            </Form>
           </Offcanvas.Body>
         </Navbar.Offcanvas>
       </Container>

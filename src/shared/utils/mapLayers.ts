@@ -23,3 +23,7 @@ export const layersPt = Object.fromEntries(
 export const layersEn = Object.fromEntries(
   LAYER_KEYS.map((key, index) => [key, layersLabelsEn[index]])
 );
+
+export const layersIconsSrc = Object.fromEntries(
+  LAYER_KEYS.map((key) => [key, `src/assets/images/icons/i-${key}.svg`])
+);

@@ -10,10 +10,10 @@ import {
 const LayersMenu = () => {
   const { layersVisibility, setLayersVisibility } = useLayersVisibility();
 
-  function handleLayerVisibility(layerKey: LayerKey) {
+  function handleLayerVisibility(layer: LayerKey) {
     setLayersVisibility((prev) => ({
       ...prev,
-      [layerKey]: !prev[layerKey],
+      [layer]: !prev[layer],
     }));
   }
 

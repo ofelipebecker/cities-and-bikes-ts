@@ -20,7 +20,7 @@ const LayersMenu = () => {
   return (
     <Form>
       {LAYERS.map((layer) => {
-        const visisbility = layersVisibility[layer];
+        const visibility = layersVisibility[layer];
         const icon = layersIconsSrc[layer];
         const label = layersPt[layer];
 
@@ -31,7 +31,7 @@ const LayersMenu = () => {
             key={`switch-${layer}`}
           >
             <Form.Check.Input
-              checked={visisbility}
+              checked={visibility}
               onChange={() => handleLayerVisibility(layer)}
             />
             <Form.Check.Label>

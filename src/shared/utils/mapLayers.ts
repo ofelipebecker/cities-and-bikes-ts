@@ -17,13 +17,13 @@ const layersLabelsEn = [
 ] as const;
 
 export const layersPt = Object.fromEntries(
-  LAYERS.map((key, index) => [key, layersLabelsPt[index]])
+  LAYERS.map((layer, index) => [layer, layersLabelsPt[index]])
 );
 
 export const layersEn = Object.fromEntries(
-  LAYERS.map((key, index) => [key, layersLabelsEn[index]])
+  LAYERS.map((layer, index) => [layer, layersLabelsEn[index]])
 );
 
 export const layersIconsSrc = Object.fromEntries(
-  LAYERS.map((key) => [key, `src/assets/images/icons/i-${key}.svg`])
+  LAYERS.map((layer) => [layer, `src/assets/images/icons/i-${layer}.svg`])
 );

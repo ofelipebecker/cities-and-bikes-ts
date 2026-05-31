@@ -16,11 +16,11 @@ const layersLabelsTextsEn = [
   'Toilets',
 ] as const;
 
-export const layersPt = Object.fromEntries(
+export const layersLabelsPt = Object.fromEntries(
   LAYERS.map((layer, index) => [layer, layersLabelsTextsPt[index]])
 );
 
-export const layersEn = Object.fromEntries(
+export const layersLabelsEn = Object.fromEntries(
   LAYERS.map((layer, index) => [layer, layersLabelsTextsEn[index]])
 );
 

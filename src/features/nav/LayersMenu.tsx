@@ -3,7 +3,7 @@ import { useLayersVisibility } from '../../store/layers-visibility-context.tsx';
 import {
   type LayerKey,
   LAYERS,
-  layersPt,
+  layersLabelsPt,
   layersIconsSrc,
 } from '../../shared/utils/mapLayers.ts';
 
@@ -22,7 +22,7 @@ const LayersMenu = () => {
       {LAYERS.map((layer) => {
         const visibility = layersVisibility[layer];
         const icon = layersIconsSrc[layer];
-        const label = layersPt[layer];
+        const label = layersLabelsPt[layer];
 
         return (
           <Form.Check

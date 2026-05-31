@@ -35,6 +35,11 @@ body {
   font-size: large;
 }
 
+.form-check-input:checked {
+  background-color: $cyan-500;
+  border: $cyan-500;
+}
+
 .navbar-nav {
   .nav-link {
     font-size: 1.3rem;

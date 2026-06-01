@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
-import { bikeMapConfig } from '../utils/bikeMapConfig.ts';
+import { bikeMapConfig, bikeMapLayersUrls } from '../utils/bikeMapConfig.ts';
 import '../styles/BikeMap.scss';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -19,6 +19,35 @@ const BikeMap = () => {
     });
 
     bikeMapRef.current = bikeMapInstance;
+
+    bikeMapInstance.on('load', () => {
+      Object.entries(bikeMapLayersUrls).forEach(([layer, layerUrl]) => {
+        const sourceId = `source-${layer}`;
+        const layerId = `layer-${layer}`;
+        const tilesetId = `ctb-${layer}`;
+
+        const iconName = `i-${layer}`;
+
+        bikeMapInstance.addSource(sourceId, {
+          type: 'vector',
+          url: layerUrl,
+        });
+
+        bikeMapInstance.addLayer({
+          id: layerId,
+          type: 'symbol',
+          source: sourceId,
+          'source-layer': tilesetId,
+          layout: {
+            visibility: 'visible',
+            'icon-image': iconName,
+            'icon-allow-overlap': false,
+            'icon-anchor': 'bottom',
+            'icon-size': 1.1,
+          },
+        });
+      });
+    });
 
     return () => {
       bikeMapInstance.remove();

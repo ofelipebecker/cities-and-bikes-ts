@@ -1,11 +1,13 @@
 import { bikeMapConfig, bikeMapLayersUrls } from './../utils/bikeMapConfig';
 import { type RefObject, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
+import { useLayersVisibility } from '../../../store/layers-visibility-context.tsx';
 
 const addLayerToMap = (
   mapboxMapInstance: mapboxgl.Map,
   layer: string,
-  layerUrl: string
+  layerUrl: string,
+  isVisible: boolean
 ) => {
   const sourceId = `source-${layer}`;
   const layerId = `layer-${layer}`;
@@ -23,7 +25,7 @@ const addLayerToMap = (
     source: sourceId,
     'source-layer': tilesetId,
     layout: {
-      visibility: 'visible',
+      visibility: isVisible ? 'visible' : 'none',
       'icon-image': iconName,
       'icon-allow-overlap': false,
       'icon-anchor': 'bottom',
@@ -34,6 +36,7 @@ const addLayerToMap = (
 
 const useMapboxMap = (containerRef: RefObject<HTMLDivElement | null>) => {
   const mapboxMapRef = useRef<mapboxgl.Map | null>(null);
+  const { layersVisibility } = useLayersVisibility();
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -47,7 +50,12 @@ const useMapboxMap = (containerRef: RefObject<HTMLDivElement | null>) => {
 
     mapboxMapInstance.on('load', () => {
       Object.entries(bikeMapLayersUrls).forEach(([layer, layerUrl]) => {
-        addLayerToMap(mapboxMapInstance, layer, layerUrl);
+        addLayerToMap(
+          mapboxMapInstance,
+          layer,
+          layerUrl,
+          layersVisibility[layer]
+        );
       });
     });
 
@@ -56,6 +64,21 @@ const useMapboxMap = (containerRef: RefObject<HTMLDivElement | null>) => {
       mapboxMapRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    const currentMapInstance = mapboxMapRef.current;
+    if (!currentMapInstance || !currentMapInstance.isStyleLoaded()) return;
+
+    Object.entries(layersVisibility).forEach(([layer, isVisible]) => {
+      if (currentMapInstance.getLayer(`layer-${layer}`)) {
+        currentMapInstance.setLayoutProperty(
+          `layer-${layer}`,
+          'visibility',
+          isVisible ? 'visible' : 'none'
+        );
+      }
+    });
+  }, [layersVisibility]);
 
   return mapboxMapRef;
 };

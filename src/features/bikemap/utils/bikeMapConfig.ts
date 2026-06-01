@@ -1,4 +1,19 @@
 import { type LngLatLike, type LngLatBoundsLike } from 'mapbox-gl';
+import { LAYERS } from '../../../shared/utils/mapLayers.ts';
+
+const bikeMapLayersUrlCodes = [
+  'cmmuxjqjp1xea1nqhwtc3ow84-8kf0r',
+  'cmmv1xxff01yq1qnwm3tifq2a-7qtdu',
+  'cmmv1qpud002c1omdqg1ueap8-448rp',
+  'cmmv1v6nk01yb1pmmp8h5apjp-8lsy7',
+];
+
+export const bikeMapLayersUrls = Object.fromEntries(
+  LAYERS.map((layer, index) => [
+    layer,
+    `mapbox://flpbecker.${bikeMapLayersUrlCodes[index]}`,
+  ])
+);
 
 type BikeMapConfig = {
   center: LngLatLike | undefined;

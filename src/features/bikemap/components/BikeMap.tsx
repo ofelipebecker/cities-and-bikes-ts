@@ -19,6 +19,11 @@ const BikeMap = () => {
     });
 
     bikeMapRef.current = bikeMapInstance;
+
+    return () => {
+      bikeMapInstance.remove();
+      bikeMapRef.current = null;
+    };
   }, []);
 
   return <div id='bike-map-container' ref={bikeMapContainerRef} />;

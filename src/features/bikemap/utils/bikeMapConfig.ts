@@ -15,7 +15,7 @@ export const bikeMapLayersUrls = Object.fromEntries(
   ])
 );
 
-type BikeMapConfig = {
+export type BikeMapConfig = {
   center: LngLatLike | undefined;
   style: string;
   zoom: number;

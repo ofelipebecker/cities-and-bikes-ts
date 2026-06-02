@@ -13,15 +13,15 @@ const setLayerInteractions = (
   mapInstance.addInteraction(`click-${layer}`, {
     type: 'click',
     target: { layerId },
-    handler: (e: InteractionEvent) => {
+    handler: (event: InteractionEvent) => {
       if (popupRef.current) {
         popupRef.current.remove();
       }
 
       const coordinates = (
-        e.feature!.geometry as GeoJSON.Point
+        event.feature!.geometry as GeoJSON.Point
       ).coordinates.slice();
-      const name = e.feature!.properties.name;
+      const name = event.feature!.properties.name;
 
       popupRef.current = new mapboxgl.Popup()
         .setLngLat(coordinates as LngLatLike)

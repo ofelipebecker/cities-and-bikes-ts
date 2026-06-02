@@ -2,7 +2,7 @@ import { createContext, useContext, useState, type ReactNode } from 'react';
 import { LAYERS_KEYS } from '../shared/utils/mapLayers.ts';
 
 type InitialState = {
-  [k: string]: boolean;
+  [layerKey: string]: boolean;
 };
 
 const initialState: InitialState = Object.fromEntries(

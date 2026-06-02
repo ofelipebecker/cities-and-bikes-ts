@@ -1,12 +1,12 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import { LAYERS } from '../shared/utils/mapLayers.ts';
+import { LAYERS_KEYS } from '../shared/utils/mapLayers.ts';
 
 type InitialState = {
   [k: string]: boolean;
 };
 
 const initialState: InitialState = Object.fromEntries(
-  LAYERS.map((key) => [key, true])
+  LAYERS_KEYS.map((key) => [key, true])
 );
 
 type LayersVisibilityContextType = {

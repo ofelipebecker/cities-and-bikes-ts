@@ -1,5 +1,5 @@
 import { type LngLatLike, type LngLatBoundsLike } from 'mapbox-gl';
-import { LAYERS } from '../../../shared/utils/mapLayers.ts';
+import { LAYERS_KEYS } from '../../../shared/utils/mapLayers.ts';
 
 const bikeMapLayersUrlCodes = [
   'cmmuxjqjp1xea1nqhwtc3ow84-8kf0r',
@@ -9,7 +9,7 @@ const bikeMapLayersUrlCodes = [
 ];
 
 export const bikeMapLayersUrls = Object.fromEntries(
-  LAYERS.map((layer, index) => [
+  LAYERS_KEYS.map((layer, index) => [
     layer,
     `mapbox://flpbecker.${bikeMapLayersUrlCodes[index]}`,
   ])

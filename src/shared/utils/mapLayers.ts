@@ -1,6 +1,6 @@
-export const LAYERS = ['gas', 'parking', 'stores', 'toilets'] as const;
+export const LAYERS_KEYS = ['gas', 'parking', 'stores', 'toilets'] as const;
 
-export type LayerKey = (typeof LAYERS)[number];
+export type LayerKey = (typeof LAYERS_KEYS)[number];
 
 const layersLabelsTextsPt = [
   'Postos de Combustível',
@@ -17,13 +17,13 @@ const layersLabelsTextsEn = [
 ] as const;
 
 export const layersLabelsPt = Object.fromEntries(
-  LAYERS.map((layer, index) => [layer, layersLabelsTextsPt[index]])
+  LAYERS_KEYS.map((layer, index) => [layer, layersLabelsTextsPt[index]])
 );
 
 export const layersLabelsEn = Object.fromEntries(
-  LAYERS.map((layer, index) => [layer, layersLabelsTextsEn[index]])
+  LAYERS_KEYS.map((layer, index) => [layer, layersLabelsTextsEn[index]])
 );
 
 export const layersIconsSrc = Object.fromEntries(
-  LAYERS.map((layer) => [layer, `src/assets/images/icons/i-${layer}.svg`])
+  LAYERS_KEYS.map((layer) => [layer, `src/assets/images/icons/i-${layer}.svg`])
 );

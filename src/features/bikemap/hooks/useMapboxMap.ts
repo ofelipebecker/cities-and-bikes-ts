@@ -47,6 +47,8 @@ const useMapboxMap = (containerRef: RefObject<HTMLDivElement | null>) => {
     });
 
     mapboxMapRef.current = mapboxMapInstance;
+    
+    mapboxMapRef.current.addControl(new mapboxgl.NavigationControl());
 
     mapboxMapInstance.on('load', () => {
       Object.entries(bikeMapLayersUrls).forEach(([layer, layerUrl]) => {

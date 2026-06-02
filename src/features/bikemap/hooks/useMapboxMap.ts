@@ -5,12 +5,12 @@ import { useLayersVisibility } from '../../../store/layers-visibility-context.ts
 
 const setLayerInteractions = (
   mapInstance: mapboxgl.Map,
-  layer: string,
+  layerKey: string,
   popupRef: RefObject<mapboxgl.Popup | null>
 ) => {
-  const layerId = `layer-${layer}`;
+  const layerId = `layer-${layerKey}`;
 
-  mapInstance.addInteraction(`click-${layer}`, {
+  mapInstance.addInteraction(`click-${layerKey}`, {
     type: 'click',
     target: { layerId },
     handler: (event: InteractionEvent) => {
@@ -30,7 +30,7 @@ const setLayerInteractions = (
     },
   });
 
-  mapInstance.addInteraction(`hover-enter-${layer}`, {
+  mapInstance.addInteraction(`hover-enter-${layerKey}`, {
     type: 'mouseenter',
     target: { layerId },
     handler: () => {
@@ -38,7 +38,7 @@ const setLayerInteractions = (
     },
   });
 
-  mapInstance.addInteraction(`hover-leave-${layer}`, {
+  mapInstance.addInteraction(`hover-leave-${layerKey}`, {
     type: 'mouseleave',
     target: { layerId },
     handler: () => {
@@ -49,14 +49,14 @@ const setLayerInteractions = (
 
 const addLayerToMap = (
   mapboxMapInstance: mapboxgl.Map,
-  layer: string,
+  layerKey: string,
   layerUrl: string,
   isVisible: boolean
 ) => {
-  const sourceId = `source-${layer}`;
-  const layerId = `layer-${layer}`;
-  const tilesetId = `ctb-${layer}`;
-  const iconName = `i-${layer}`;
+  const sourceId = `source-${layerKey}`;
+  const layerId = `layer-${layerKey}`;
+  const tilesetId = `ctb-${layerKey}`;
+  const iconName = `i-${layerKey}`;
 
   mapboxMapInstance.addSource(sourceId, {
     type: 'vector',
@@ -96,15 +96,15 @@ const useMapboxMap = (containerRef: RefObject<HTMLDivElement | null>) => {
     mapboxMapRef.current.addControl(new mapboxgl.NavigationControl());
 
     mapboxMapInstance.on('load', () => {
-      Object.entries(bikeMapLayersUrls).forEach(([layer, layerUrl]) => {
+      Object.entries(bikeMapLayersUrls).forEach(([layerKey, layerUrl]) => {
         addLayerToMap(
           mapboxMapInstance,
-          layer,
+          layerKey,
           layerUrl,
-          layersVisibility[layer]
+          layersVisibility[layerKey]
         );
 
-        setLayerInteractions(mapboxMapInstance, layer, popupRef);
+        setLayerInteractions(mapboxMapInstance, layerKey, popupRef);
       });
     });
 
@@ -118,10 +118,10 @@ const useMapboxMap = (containerRef: RefObject<HTMLDivElement | null>) => {
     const currentMapInstance = mapboxMapRef.current;
     if (!currentMapInstance || !currentMapInstance.isStyleLoaded()) return;
 
-    Object.entries(layersVisibility).forEach(([layer, isVisible]) => {
-      if (currentMapInstance.getLayer(`layer-${layer}`)) {
+    Object.entries(layersVisibility).forEach(([layerKey, isVisible]) => {
+      if (currentMapInstance.getLayer(`layer-${layerKey}`)) {
         currentMapInstance.setLayoutProperty(
-          `layer-${layer}`,
+          `layer-${layerKey}`,
           'visibility',
           isVisible ? 'visible' : 'none'
         );

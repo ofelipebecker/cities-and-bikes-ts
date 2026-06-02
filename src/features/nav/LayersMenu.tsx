@@ -10,29 +10,29 @@ import {
 const LayersMenu = () => {
   const { layersVisibility, setLayersVisibility } = useLayersVisibility();
 
-  function handleLayerVisibility(layer: LayerKey) {
+  function handleLayerVisibility(layerKey: LayerKey) {
     setLayersVisibility((prev) => ({
       ...prev,
-      [layer]: !prev[layer],
+      [layerKey]: !prev[layerKey],
     }));
   }
 
   return (
     <Form>
-      {LAYERS_KEYS.map((layer) => {
-        const visibility = layersVisibility[layer];
-        const icon = layersIconsSrc[layer];
-        const label = layersLabelsPt[layer];
+      {LAYERS_KEYS.map((layerKey) => {
+        const visibility = layersVisibility[layerKey];
+        const icon = layersIconsSrc[layerKey];
+        const label = layersLabelsPt[layerKey];
 
         return (
           <Form.Check
             type='switch'
             className='align-items-center d-flex my-4'
-            key={`switch-${layer}`}
+            key={`switch-${layerKey}`}
           >
             <Form.Check.Input
               checked={visibility}
-              onChange={() => handleLayerVisibility(layer)}
+              onChange={() => handleLayerVisibility(layerKey)}
             />
             <Form.Check.Label>
               <Image src={icon} alt={icon} className='me-2 ms-3' />

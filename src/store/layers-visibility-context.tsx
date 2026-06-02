@@ -6,7 +6,7 @@ type InitialState = {
 };
 
 const initialState: InitialState = Object.fromEntries(
-  LAYERS_KEYS.map((key) => [key, true])
+  LAYERS_KEYS.map((layerKey) => [layerKey, true])
 );
 
 type LayersVisibilityContextType = {

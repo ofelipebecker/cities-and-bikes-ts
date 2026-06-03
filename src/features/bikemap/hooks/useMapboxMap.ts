@@ -3,6 +3,16 @@ import { type RefObject, useEffect, useRef } from 'react';
 import mapboxgl, { type InteractionEvent, type LngLatLike } from 'mapbox-gl';
 import { useLayersVisibility } from '../../../store/layers-visibility-context.tsx';
 
+export type PopupInfo = {
+  name: string;
+};
+
+const createPopupHtml = (popupInfo: PopupInfo) => {
+  const { name } = popupInfo;
+
+  return `<h2>${name}</h2>`;
+};
+
 const setLayerInteractions = (
   mapInstance: mapboxgl.Map,
   layerKey: string,
@@ -20,13 +30,20 @@ const setLayerInteractions = (
         popupRef.current.remove();
       }
 
-      const geometry = event.feature.geometry as GeoJSON.Point;
+      const feature = event.feature;
+      const geometry = feature.geometry as GeoJSON.Point;
       const coordinates = geometry.coordinates.slice();
-      const name = event.feature.properties.name;
+      const properties = feature.properties;
+
+      const popupInfo: PopupInfo = {
+        name: String(properties.name),
+      };
+
+      const popUpHtml = createPopupHtml(popupInfo);
 
       popupRef.current = new mapboxgl.Popup()
         .setLngLat(coordinates as LngLatLike)
-        .setHTML(`<h2>${name}</h2>`)
+        .setHTML(popUpHtml)
         .addTo(mapInstance);
     },
   });

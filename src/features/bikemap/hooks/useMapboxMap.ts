@@ -60,6 +60,7 @@ const setLayerInteractions = (
       popupRef.current = new mapboxgl.Popup()
         .setLngLat(coordinates as LngLatLike)
         .setHTML(popUpHtml)
+        .setMaxWidth('300px')
         .addTo(mapInstance);
     },
   });

@@ -2,15 +2,27 @@ import { bikeMapConfig, bikeMapLayersUrls } from './../utils/bikeMapConfig';
 import { type RefObject, useEffect, useRef } from 'react';
 import mapboxgl, { type InteractionEvent, type LngLatLike } from 'mapbox-gl';
 import { useLayersVisibility } from '../../../store/layers-visibility-context.tsx';
+import { layersIconsSrc } from '../../../shared/utils/mapLayers.ts';
 
 export type PopupInfo = {
   name: string;
+  address: string;
+  openHours: string;
+  phoneNum?: string;
 };
 
-const createPopupHtml = (popupInfo: PopupInfo) => {
-  const { name } = popupInfo;
-
-  return `<h2>${name}</h2>`;
+const createPopupHtml = (popupInfo: PopupInfo, layerKey: string) => {
+  const { name, address, openHours, phoneNum } = popupInfo;
+  const icon = layersIconsSrc[layerKey];
+  return `
+    <div class='d-flex align-items-center'>
+      <img src=${icon} alt=${icon} class='me-2' />
+      <h3 class='me-2'>${name}</h3>
+    </div>
+    <p>${address}</p>
+    <p>Horário: ${openHours}</p>
+    <h4>Contato:</h4>${phoneNum}
+  `;
 };
 
 const setLayerInteractions = (
@@ -35,11 +47,15 @@ const setLayerInteractions = (
       const coordinates = geometry.coordinates.slice();
       const properties = feature.properties;
 
-      const popupInfo: PopupInfo = {
+      const popupInfo = {
         name: String(properties.name),
+        address:
+          properties['addr:street'] + ', ' + properties['addr:housenumber'],
+        openHours: String(properties.opening_hours),
+        phoneNum: String(properties.phone),
       };
 
-      const popUpHtml = createPopupHtml(popupInfo);
+      const popUpHtml = createPopupHtml(popupInfo, layerKey);
 
       popupRef.current = new mapboxgl.Popup()
         .setLngLat(coordinates as LngLatLike)

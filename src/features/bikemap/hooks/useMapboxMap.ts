@@ -47,8 +47,7 @@ const setLayerInteractions = (
 
       const popupInfo = {
         name: String(properties.name),
-        address:
-          properties['addr:street'] + ', ' + properties['addr:housenumber'],
+        address: `${properties['addr:street']}, ${properties['addr:housenumber']}`,
         openHours: String(properties.opening_hours),
         phoneNum: String(properties.phone),
       };

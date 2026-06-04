@@ -1,92 +1,11 @@
 import { bikeMapConfig, bikeMapLayersUrls } from './../utils/bikeMapConfig';
 import { type RefObject, useEffect, useRef } from 'react';
-import mapboxgl, { type InteractionEvent, type LngLatLike } from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl';
 import { useLayersVisibility } from '../../../store/layers-visibility-context.tsx';
-import createPlacePopup from '../utils/createPlacePopup.tsx';
-
-const setLayerInteractions = (
-  mapInstance: mapboxgl.Map,
-  layerKey: string,
-  popupRef: RefObject<mapboxgl.Popup | null>
-) => {
-  const layerId = `layer-${layerKey}`;
-
-  mapInstance.addInteraction(`click-${layerKey}`, {
-    type: 'click',
-    target: { layerId },
-    handler: (event: InteractionEvent) => {
-      if (!event.feature) return;
-
-      if (popupRef.current) {
-        popupRef.current.remove();
-      }
-
-      const { geometry, properties } = event.feature;
-      const coordinates = (geometry as GeoJSON.Point).coordinates.slice();
-
-      const popupInfo = {
-        name: String(properties.name),
-        address: `${properties['addr:street']}, ${properties['addr:housenumber']}`,
-        openHours: String(properties.opening_hours),
-        phoneNum: String(properties.phone),
-      };
-
-      popupRef.current = createPlacePopup({
-        mapInstance,
-        coordinates: coordinates as LngLatLike,
-        popupInfo,
-        layerKey,
-      });
-    },
-  });
-
-  mapInstance.addInteraction(`hover-enter-${layerKey}`, {
-    type: 'mouseenter',
-    target: { layerId },
-    handler: () => {
-      mapInstance.getCanvas().style.cursor = 'pointer';
-    },
-  });
-
-  mapInstance.addInteraction(`hover-leave-${layerKey}`, {
-    type: 'mouseleave',
-    target: { layerId },
-    handler: () => {
-      mapInstance.getCanvas().style.cursor = '';
-    },
-  });
-};
-
-const addLayerToMap = (
-  mapboxMapInstance: mapboxgl.Map,
-  layerKey: string,
-  layerUrl: string,
-  isVisible: boolean
-) => {
-  const sourceId = `source-${layerKey}`;
-  const layerId = `layer-${layerKey}`;
-  const tilesetId = `ctb-${layerKey}`;
-  const iconName = `i-${layerKey}`;
-
-  mapboxMapInstance.addSource(sourceId, {
-    type: 'vector',
-    url: layerUrl,
-  });
-
-  mapboxMapInstance.addLayer({
-    id: layerId,
-    type: 'symbol',
-    source: sourceId,
-    'source-layer': tilesetId,
-    layout: {
-      visibility: isVisible ? 'visible' : 'none',
-      'icon-image': iconName,
-      'icon-allow-overlap': false,
-      'icon-anchor': 'bottom',
-      'icon-size': 1.1,
-    },
-  });
-};
+import {
+  setLayerInteractions,
+  addLayerToMap,
+} from '../utils/mapboxMapHelpers.tsx';
 
 const useMapboxMap = (containerRef: RefObject<HTMLDivElement | null>) => {
   const mapboxMapRef = useRef<mapboxgl.Map | null>(null);

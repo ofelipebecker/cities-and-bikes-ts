@@ -1,37 +1,8 @@
 import { bikeMapConfig, bikeMapLayersUrls } from './../utils/bikeMapConfig';
-import {
-  type ReactElement,
-  type RefObject,
-  createElement,
-  useEffect,
-  useRef,
-} from 'react';
-import { createRoot } from 'react-dom/client';
+import { type RefObject, useEffect, useRef } from 'react';
 import mapboxgl, { type InteractionEvent, type LngLatLike } from 'mapbox-gl';
 import { useLayersVisibility } from '../../../store/layers-visibility-context.tsx';
-import PopupContent from '../components/PopupContent.tsx';
-
-const createReactPopup = (
-  mapInstance: mapboxgl.Map,
-  coordinates: LngLatLike,
-  component: ReactElement
-) => {
-  const popupNode = document.createElement('div');
-  const popupRoot = createRoot(popupNode);
-  popupRoot.render(component);
-
-  const popup = new mapboxgl.Popup()
-    .setLngLat(coordinates)
-    .setDOMContent(popupNode)
-    .setMaxWidth('300px')
-    .addTo(mapInstance);
-
-  popup.on('close', () => {
-    popupRoot.unmount();
-  });
-
-  return popup;
-};
+import createPlacePopup from '../utils/createPlacePopup.tsx';
 
 const setLayerInteractions = (
   mapInstance: mapboxgl.Map,
@@ -60,11 +31,12 @@ const setLayerInteractions = (
         phoneNum: String(properties.phone),
       };
 
-      popupRef.current = createReactPopup(
+      popupRef.current = createPlacePopup({
         mapInstance,
-        coordinates as LngLatLike,
-        createElement(PopupContent, { popupInfo, layerKey })
-      );
+        coordinates: coordinates as LngLatLike,
+        popupInfo,
+        layerKey,
+      });
     },
   });
 

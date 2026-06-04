@@ -1,28 +1,36 @@
 import { bikeMapConfig, bikeMapLayersUrls } from './../utils/bikeMapConfig';
-import { type RefObject, useEffect, useRef } from 'react';
+import {
+  type ReactElement,
+  type RefObject,
+  createElement,
+  useEffect,
+  useRef,
+} from 'react';
+import { createRoot } from 'react-dom/client';
 import mapboxgl, { type InteractionEvent, type LngLatLike } from 'mapbox-gl';
 import { useLayersVisibility } from '../../../store/layers-visibility-context.tsx';
-import { layersIconsSrc } from '../../../shared/utils/mapLayers.ts';
+import PopupContent from '../components/PopupContent.tsx';
 
-export type PopupInfo = {
-  name: string;
-  address: string;
-  openHours: string;
-  phoneNum?: string;
-};
+const createReactPopup = (
+  mapInstance: mapboxgl.Map,
+  coordinates: LngLatLike,
+  component: ReactElement
+) => {
+  const popupNode = document.createElement('div');
+  const popupRoot = createRoot(popupNode);
+  popupRoot.render(component);
 
-const createPopupHtml = (popupInfo: PopupInfo, layerKey: string) => {
-  const { name, address, openHours, phoneNum } = popupInfo;
-  const icon = layersIconsSrc[layerKey];
-  return `
-    <div class='d-flex align-items-center'>
-      <img src=${icon} alt=${icon} class='me-2' />
-      <h3 class='me-2'>${name}</h3>
-    </div>
-    <p>${address}</p>
-    <p>Horário: ${openHours}</p>
-    <h4>Contato:</h4>${phoneNum}
-  `;
+  const popup = new mapboxgl.Popup()
+    .setLngLat(coordinates)
+    .setDOMContent(popupNode)
+    .setMaxWidth('300px')
+    .addTo(mapInstance);
+
+  popup.on('close', () => {
+    popupRoot.unmount();
+  });
+
+  return popup;
 };
 
 const setLayerInteractions = (
@@ -52,13 +60,11 @@ const setLayerInteractions = (
         phoneNum: String(properties.phone),
       };
 
-      const popUpHtml = createPopupHtml(popupInfo, layerKey);
-
-      popupRef.current = new mapboxgl.Popup()
-        .setLngLat(coordinates as LngLatLike)
-        .setHTML(popUpHtml)
-        .setMaxWidth('300px')
-        .addTo(mapInstance);
+      popupRef.current = createReactPopup(
+        mapInstance,
+        coordinates as LngLatLike,
+        createElement(PopupContent, { popupInfo, layerKey })
+      );
     },
   });
 

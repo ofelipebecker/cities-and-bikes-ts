@@ -1,10 +1,11 @@
-import { bikeMapConfig, bikeMapLayersUrls } from './../utils/bikeMapConfig';
-import { type RefObject, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
+import type { RefObject } from 'react';
 import { useLayersVisibility } from '../../../store/layers-visibility-context.tsx';
+import { bikeMapConfig, bikeMapLayersUrls } from './../utils/bikeMapConfig';
 import {
-  setLayerInteractions,
   addLayerToMap,
+  setLayerInteractions,
 } from '../utils/mapboxMapHelpers.tsx';
 
 const useMapboxMap = (containerRef: RefObject<HTMLDivElement | null>) => {

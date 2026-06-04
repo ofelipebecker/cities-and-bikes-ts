@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState } from 'react';
+import type { ReactNode } from 'react';
 import { LAYERS_KEYS } from '../shared/utils/mapLayers.ts';
 
 type InitialState = {

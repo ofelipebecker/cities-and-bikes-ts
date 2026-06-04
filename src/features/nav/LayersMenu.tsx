@@ -1,11 +1,11 @@
 import { Form, Image } from 'react-bootstrap';
-import { useLayersVisibility } from '../../store/layers-visibility-context.tsx';
+import type { LayerKey } from '../../shared/utils/mapLayers.ts';
 import {
-  type LayerKey,
   LAYERS_KEYS,
-  layersLabelsPt,
   layersIconsSrc,
+  layersLabelsPt,
 } from '../../shared/utils/mapLayers.ts';
+import { useLayersVisibility } from '../../store/layers-visibility-context.tsx';
 
 const LayersMenu = () => {
   const { layersVisibility, setLayersVisibility } = useLayersVisibility();

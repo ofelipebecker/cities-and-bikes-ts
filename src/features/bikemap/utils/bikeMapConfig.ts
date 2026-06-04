@@ -1,4 +1,4 @@
-import { type LngLatLike, type LngLatBoundsLike } from 'mapbox-gl';
+import type { LngLatLike, LngLatBoundsLike } from 'mapbox-gl';
 import { LAYERS_KEYS } from '../../../shared/utils/mapLayers.ts';
 
 const bikeMapLayersUrlCodes = [

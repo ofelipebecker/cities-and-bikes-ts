@@ -1,6 +1,7 @@
-import mapboxgl, { type InteractionEvent, type LngLatLike } from 'mapbox-gl';
-import { type RefObject } from 'react';
 import { createRoot } from 'react-dom/client';
+import mapboxgl from 'mapbox-gl';
+import type { RefObject } from 'react';
+import type { InteractionEvent, LngLatLike } from 'mapbox-gl';
 import { layersIconsSrc } from '../../../shared/utils/mapLayers.ts';
 
 type PopupInfo = {

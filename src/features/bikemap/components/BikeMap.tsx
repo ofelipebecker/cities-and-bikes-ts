@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
-import '../styles/BikeMap.scss';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import '../styles/BikeMap.scss';
 import useMapboxMap from '../hooks/useMapboxMap.ts';
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;

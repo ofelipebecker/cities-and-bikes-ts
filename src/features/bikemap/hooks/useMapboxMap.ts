@@ -42,10 +42,8 @@ const setLayerInteractions = (
         popupRef.current.remove();
       }
 
-      const feature = event.feature;
-      const geometry = feature.geometry as GeoJSON.Point;
-      const coordinates = geometry.coordinates.slice();
-      const properties = feature.properties;
+      const { geometry, properties } = event.feature;
+      const coordinates = (geometry as GeoJSON.Point).coordinates.slice();
 
       const popupInfo = {
         name: String(properties.name),

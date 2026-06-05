@@ -9,19 +9,8 @@ const layersLabelsTextsPt = [
   'Banheiros',
 ] as const;
 
-const layersLabelsTextsEn = [
-  'Gas Stations',
-  'Parking',
-  'Stores & Workshops',
-  'Toilets',
-] as const;
-
 export const layersLabelsPt = Object.fromEntries(
   LAYERS_KEYS.map((layerKey, index) => [layerKey, layersLabelsTextsPt[index]])
-);
-
-export const layersLabelsEn = Object.fromEntries(
-  LAYERS_KEYS.map((layerKey, index) => [layerKey, layersLabelsTextsEn[index]])
 );
 
 export const layersIconsSrc = Object.fromEntries(

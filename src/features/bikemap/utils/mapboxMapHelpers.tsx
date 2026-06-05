@@ -25,13 +25,14 @@ const createPlacePopup = ({
   layerKey,
 }: CreatePlacePopupParams) => {
   const popupNode = document.createElement('div');
+  popupNode.className = 'd-flex flex-column';
   const popupRoot = createRoot(popupNode);
 
   const { name, address, openHours, phoneNum } = popupInfo;
   const icon = layersIconsSrc[layerKey];
 
   popupRoot.render(
-    <div className='d-flex flex-column'>
+    <>
       <div className='d-flex align-items-center mb-2'>
         <img
           src={icon}
@@ -49,7 +50,7 @@ const createPlacePopup = ({
           <p>{phoneNum}</p>
         </>
       )}
-    </div>
+    </>
   );
 
   const popup = new mapboxgl.Popup()

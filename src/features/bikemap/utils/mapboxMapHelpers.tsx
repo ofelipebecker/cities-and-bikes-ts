@@ -2,7 +2,10 @@ import { createRoot } from 'react-dom/client';
 import mapboxgl from 'mapbox-gl';
 import type { RefObject } from 'react';
 import type { InteractionEvent, LngLatLike } from 'mapbox-gl';
-import { layersIconsSrc } from '../../../shared/utils/mapLayers.ts';
+import {
+  layersIconsSrc,
+  placesLabelsPt,
+} from '../../../shared/utils/mapLayers.ts';
 
 type PopupInfo = {
   name: string;
@@ -42,14 +45,10 @@ const createPlacePopup = ({
         />
         <h3 className='me-2 mb-0'>{name}</h3>
       </div>
-      <p className='mb-1'>{address}</p>
-      <p className='mb-1'>Horário: {openHours}</p>
-      {phoneNum && (
-        <>
-          <h4 className='mt-2'>Contato:</h4>
-          <p>{phoneNum}</p>
-        </>
-      )}
+      <p className='mb-1'>Endereço: {address}</p>
+      <p className='mb-1'>Horário: {openHours}</p>{' '}
+      <h4 className='mt-2'>Contato:</h4>
+      <p>{phoneNum}</p>
     </>
   );
 
@@ -86,11 +85,20 @@ export const setLayerInteractions = (
       const { geometry, properties } = event.feature;
       const coordinates = (geometry as GeoJSON.Point).coordinates.slice();
 
+      const notInformed = 'Não informado';
+
       const popupInfo = {
-        name: String(properties.name),
-        address: `${properties['addr:street']}, ${properties['addr:housenumber']}`,
-        openHours: String(properties.opening_hours),
-        phoneNum: String(properties.phone),
+        name: properties.name
+          ? String(properties.name)
+          : placesLabelsPt[layerKey],
+        address:
+          properties['addr:street'] && properties['addr:housenumber']
+            ? `${properties['addr:street']}, ${properties['addr:housenumber']}`
+            : notInformed,
+        openHours: properties.opening_hours
+          ? String(properties.opening_hours)
+          : notInformed,
+        phoneNum: properties.phone ? String(properties.phone) : notInformed,
       };
 
       popupRef.current = createPlacePopup({

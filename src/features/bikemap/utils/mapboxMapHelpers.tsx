@@ -1,3 +1,4 @@
+import { Image } from 'react-bootstrap';
 import { createRoot } from 'react-dom/client';
 import mapboxgl from 'mapbox-gl';
 import opening_hours from 'opening_hours';
@@ -38,7 +39,7 @@ const createPlacePopup = ({
   popupRoot.render(
     <>
       <div className='d-flex align-items-center mb-2'>
-        <img
+        <Image
           src={icon}
           alt={name}
           className='me-2'

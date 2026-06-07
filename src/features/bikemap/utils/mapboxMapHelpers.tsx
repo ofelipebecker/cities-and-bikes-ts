@@ -47,7 +47,7 @@ const createPlacePopup = ({
         <h3 className='me-2 mb-0'>{name}</h3>
       </div>
       <p className='mb-1'>Endereço: {address}</p>
-      <p className='mb-1'>Horário: {openHours}</p>{' '}
+      <p className='mb-1'>Horário: {openHours}</p>
       <h4 className='mt-2'>Contato:</h4>
       <p>{phoneNum}</p>
     </>

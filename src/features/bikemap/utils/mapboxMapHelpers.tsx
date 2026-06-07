@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import mapboxgl from 'mapbox-gl';
+import opening_hours from 'opening_hours';
 import type { RefObject } from 'react';
 import type { InteractionEvent, LngLatLike } from 'mapbox-gl';
 import {
@@ -65,6 +66,27 @@ const createPlacePopup = ({
   return popup;
 };
 
+const formatOpeningHoursPtBr = (
+  openHours: string,
+  coordinates: number[]
+): string => {
+  if (!openHours) {
+    return '';
+  }
+
+  const [lat, lon] = coordinates;
+
+  const nominatimObject = {
+    lat: lat,
+    lon: lon,
+    address: { country_code: 'br', state: 'Santa Catarina' },
+  };
+  const oh = new opening_hours(openHours, nominatimObject);
+  const formattedOpenHours = oh.prettifyValue({ conf: { locale: 'pt' } });
+
+  return formattedOpenHours;
+};
+
 export const setLayerInteractions = (
   mapInstance: mapboxgl.Map,
   layerKey: string,
@@ -96,7 +118,10 @@ export const setLayerInteractions = (
             ? `${properties['addr:street']}, ${properties['addr:housenumber']}`
             : notInformed,
         openHours: properties.opening_hours
-          ? String(properties.opening_hours)
+          ? formatOpeningHoursPtBr(
+              String(properties.opening_hours),
+              coordinates
+            )
           : notInformed,
         phoneNum: properties.phone ? String(properties.phone) : notInformed,
       };

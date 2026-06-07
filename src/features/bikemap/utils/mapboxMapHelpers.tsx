@@ -66,25 +66,49 @@ const createPlacePopup = ({
   return popup;
 };
 
-const formatOpeningHoursPtBr = (
-  openHours: string,
-  coordinates: number[]
-): string => {
+const formatOpeningHoursPtBr = (openHours: string, coordinates: number[]) => {
   if (!openHours) {
     return '';
   }
 
-  const [lat, lon] = coordinates;
+  try {
+    const [lat, lon] = coordinates;
+    const nominatimObject = {
+      lat,
+      lon,
+      address: {
+        country_code: 'br',
+        state: 'Santa Catarina',
+      },
+    };
+    const normalizedOpenHours = openHours
+      .replace(/\bph\b/gi, 'PH')
+      .replace(/\bsh\b/gi, 'SH');
+    const translationFallbacks: [string, string][] = [
+      ['PH -1 day', 'véspera de feriado:'],
+      ['PH +1 day', 'dia seguinte ao feriado:'],
+      ['PH', 'feriado:'],
+      ['SH', 'férias escolares:'],
+      ['by appointment only', 'somente com agendamento'],
+      ['by appointment', 'com agendamento'],
+      ['closed', 'fechado'],
+      ['off', 'fechado'],
+      ['24/7', '24 horas'],
+    ];
 
-  const nominatimObject = {
-    lat: lat,
-    lon: lon,
-    address: { country_code: 'br', state: 'Santa Catarina' },
-  };
-  const oh = new opening_hours(openHours, nominatimObject);
-  const formattedOpenHours = oh.prettifyValue({ conf: { locale: 'pt' } });
+    const oh = new opening_hours(normalizedOpenHours, nominatimObject);
+    let formatted = oh.prettifyValue({
+      conf: { locale: 'pt' },
+    });
 
-  return formattedOpenHours;
+    translationFallbacks.forEach(([search, replace]) => {
+      formatted = formatted.replaceAll(search, replace);
+    });
+
+    return formatted;
+  } catch {
+    return openHours;
+  }
 };
 
 export const setLayerInteractions = (

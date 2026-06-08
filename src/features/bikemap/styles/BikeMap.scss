@@ -8,7 +8,10 @@
   font-size: x-large;
 }
 
+.mapboxgl-popup {
+  filter: var(--drop-shadow-1);
+}
+
 .mapboxgl-popup-content {
-  box-shadow: var(--box-shadow-2);
   padding: 1rem 2rem 1rem 1rem;
 }

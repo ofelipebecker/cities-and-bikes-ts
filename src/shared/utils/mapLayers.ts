@@ -23,7 +23,7 @@ export const layersLabelsPt = Object.fromEntries(
 export const layersIconsSrc = Object.fromEntries(
   LAYERS_KEYS.map((layerKey) => [
     layerKey,
-    `src/assets/images/icons/i-${layerKey}.svg`,
+    new URL(`/src/assets/images/icons/i-${layerKey}.svg`, import.meta.url).href,
   ])
 );
 

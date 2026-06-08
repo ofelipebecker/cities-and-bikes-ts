@@ -70,45 +70,44 @@ const createPlacePopup = ({
   const popupNode = document.createElement('div');
   popupNode.className = 'd-flex flex-column';
   const popupRoot = createRoot(popupNode);
-  const icon = layersIconsSrc[layerKey];
   const notInformed = 'Não informado';
   const isBWC = layerKey === 'toilets';
 
-  const name = properties.name
-    ? String(properties.name)
-    : placesLabelsPt[layerKey];
-
-  const address =
-    properties['addr:street'] && properties['addr:housenumber']
-      ? `${properties['addr:street']}, ${properties['addr:housenumber']}`
-      : notInformed;
-
-  const openHours = properties.opening_hours
-    ? formatOpeningHoursPtBr(
-        String(properties.opening_hours),
-        coordinates as number[]
-      )
-    : notInformed;
-
-  const phoneNum = properties.phone ? String(properties.phone) : notInformed;
+  const data = {
+    icon: layersIconsSrc[layerKey],
+    name: () =>
+      properties.name ? String(properties.name) : placesLabelsPt[layerKey],
+    address: () =>
+      properties['addr:street'] && properties['addr:housenumber']
+        ? `${properties['addr:street']}, ${properties['addr:housenumber']}`
+        : notInformed,
+    openHours: () =>
+      properties.opening_hours
+        ? formatOpeningHoursPtBr(
+            String(properties.opening_hours),
+            coordinates as number[]
+          )
+        : notInformed,
+    phoneNum: () => (properties.phone ? String(properties.phone) : notInformed),
+  };
 
   popupRoot.render(
     <>
       <div className='d-flex align-items-center mb-2'>
         <Image
-          src={icon}
-          alt={name}
+          src={data.icon}
+          alt={data.name()}
           className='me-2'
           style={{ width: 24, height: 24 }}
         />
-        <h3 className='me-2 mb-0'>{name}</h3>
+        <h3 className='me-2 mb-0'>{data.name()}</h3>
       </div>
-      <p className='mb-1'>Endereço: {address}</p>
-      <p className='mb-1'>Horário: {openHours}</p>
+      <p className='mb-1'>Endereço: {data.address()}</p>
+      <p className={isBWC ? 'mb-0' : 'mb-1'}>Horário: {data.openHours()}</p>
       {!isBWC && (
         <>
           <h4 className='mt-2'>Contato:</h4>
-          <p>{phoneNum}</p>
+          <p className='mb-0'>{data.phoneNum()}</p>
         </>
       )}
     </>

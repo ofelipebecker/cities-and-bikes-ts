@@ -9,62 +9,11 @@ import {
   placesLabelsPt,
 } from '../../../shared/utils/mapLayers.ts';
 
-type PopupInfo = {
-  name: string;
-  address: string;
-  openHours: string;
-  phoneNum?: string;
-};
-
 type CreatePlacePopupParams = {
   mapInstance: mapboxgl.Map;
   coordinates: LngLatLike;
-  popupInfo: PopupInfo;
+  properties: Record<string, string | number | boolean>;
   layerKey: string;
-};
-
-const createPlacePopup = ({
-  mapInstance,
-  coordinates,
-  popupInfo,
-  layerKey,
-}: CreatePlacePopupParams) => {
-  const popupNode = document.createElement('div');
-  popupNode.className = 'd-flex flex-column';
-  const popupRoot = createRoot(popupNode);
-
-  const { name, address, openHours, phoneNum } = popupInfo;
-  const icon = layersIconsSrc[layerKey];
-
-  popupRoot.render(
-    <>
-      <div className='d-flex align-items-center mb-2'>
-        <Image
-          src={icon}
-          alt={name}
-          className='me-2'
-          style={{ width: 24, height: 24 }}
-        />
-        <h3 className='me-2 mb-0'>{name}</h3>
-      </div>
-      <p className='mb-1'>Endereço: {address}</p>
-      <p className='mb-1'>Horário: {openHours}</p>
-      <h4 className='mt-2'>Contato:</h4>
-      <p>{phoneNum}</p>
-    </>
-  );
-
-  const popup = new mapboxgl.Popup()
-    .setLngLat(coordinates)
-    .setDOMContent(popupNode)
-    .setMaxWidth('300px')
-    .addTo(mapInstance);
-
-  popup.on('close', () => {
-    popupRoot.unmount();
-  });
-
-  return popup;
 };
 
 const formatOpeningHoursPtBr = (openHours: string, coordinates: number[]) => {
@@ -112,6 +61,67 @@ const formatOpeningHoursPtBr = (openHours: string, coordinates: number[]) => {
   }
 };
 
+const createPlacePopup = ({
+  mapInstance,
+  coordinates,
+  properties,
+  layerKey,
+}: CreatePlacePopupParams) => {
+  const popupNode = document.createElement('div');
+  popupNode.className = 'd-flex flex-column';
+  const popupRoot = createRoot(popupNode);
+  const icon = layersIconsSrc[layerKey];
+  const notInformed = 'Não informado';
+
+  const name = properties.name
+    ? String(properties.name)
+    : placesLabelsPt[layerKey];
+
+  const address =
+    properties['addr:street'] && properties['addr:housenumber']
+      ? `${properties['addr:street']}, ${properties['addr:housenumber']}`
+      : notInformed;
+
+  const openHours = properties.opening_hours
+    ? formatOpeningHoursPtBr(
+        String(properties.opening_hours),
+        coordinates as number[]
+      )
+    : notInformed;
+
+  const phoneNum = properties.phone ? String(properties.phone) : notInformed;
+
+  popupRoot.render(
+    <>
+      <div className='d-flex align-items-center mb-2'>
+        <Image
+          src={icon}
+          alt={name}
+          className='me-2'
+          style={{ width: 24, height: 24 }}
+        />
+        <h3 className='me-2 mb-0'>{name}</h3>
+      </div>
+      <p className='mb-1'>Endereço: {address}</p>
+      <p className='mb-1'>Horário: {openHours}</p>
+      <h4 className='mt-2'>Contato:</h4>
+      <p>{phoneNum}</p>
+    </>
+  );
+
+  const popup = new mapboxgl.Popup()
+    .setLngLat(coordinates)
+    .setDOMContent(popupNode)
+    .setMaxWidth('300px')
+    .addTo(mapInstance);
+
+  popup.on('close', () => {
+    popupRoot.unmount();
+  });
+
+  return popup;
+};
+
 export const setLayerInteractions = (
   mapInstance: mapboxgl.Map,
   layerKey: string,
@@ -132,29 +142,10 @@ export const setLayerInteractions = (
       const { geometry, properties } = event.feature;
       const coordinates = (geometry as GeoJSON.Point).coordinates.slice();
 
-      const notInformed = 'Não informado';
-
-      const popupInfo = {
-        name: properties.name
-          ? String(properties.name)
-          : placesLabelsPt[layerKey],
-        address:
-          properties['addr:street'] && properties['addr:housenumber']
-            ? `${properties['addr:street']}, ${properties['addr:housenumber']}`
-            : notInformed,
-        openHours: properties.opening_hours
-          ? formatOpeningHoursPtBr(
-              String(properties.opening_hours),
-              coordinates
-            )
-          : notInformed,
-        phoneNum: properties.phone ? String(properties.phone) : notInformed,
-      };
-
       popupRef.current = createPlacePopup({
         mapInstance,
         coordinates: coordinates as LngLatLike,
-        popupInfo,
+        properties: properties,
         layerKey,
       });
     },

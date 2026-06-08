@@ -1,10 +1,13 @@
-import './App.css';
+import LayersContextProvider from './store/layers-visibility-context.tsx';
+import BikeMap from './features/bikemap/components/BikeMap.tsx';
+import MainNav from './features/nav/MainNav.tsx';
 
 function App() {
   return (
-    <>
-      <h1>Cities & Bikes TS</h1>
-    </>
+    <LayersContextProvider>
+      <MainNav />
+      <BikeMap />
+    </LayersContextProvider>
   );
 }
 

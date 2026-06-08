@@ -1,0 +1,58 @@
+@import '/node_modules/bootstrap/scss/bootstrap.scss';
+
+:root {
+  --box-shadow-1:
+    rgba(0, 0, 0, 0.12) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+
+  --drop-shadow-1: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12))
+    drop-shadow(0 3px 6px rgba(0, 0, 0, 0.23));
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-size: 1.3rem;
+  min-height: 100vh;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  nav.navbar {
+    z-index: 10;
+  }
+}
+
+.bg-cyan-500 {
+  background-color: $cyan-500 !important;
+}
+
+.bg-gray-200 {
+  background-color: $gray-200 !important;
+}
+
+.btn-close {
+  font-size: large;
+}
+
+.form-check-input:checked {
+  background-color: $cyan-500;
+  border: $cyan-500;
+}
+
+.navbar-nav {
+  .nav-link {
+    font-size: 1.3rem;
+  }
+}
+
+.shadow-1 {
+  box-shadow: var(--box-shadow-1);
+}
+
+.text-cyan-100 {
+  color: $cyan-100 !important;
+}

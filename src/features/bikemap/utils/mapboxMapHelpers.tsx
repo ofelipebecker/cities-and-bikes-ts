@@ -117,6 +117,7 @@ const createPlacePopup = ({
     .setLngLat(coordinates)
     .setDOMContent(popupNode)
     .setMaxWidth('300px')
+    .setOffset([0, -40])
     .addTo(mapInstance);
 
   popup.on('close', () => {

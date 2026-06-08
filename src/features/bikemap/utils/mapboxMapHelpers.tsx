@@ -72,6 +72,7 @@ const createPlacePopup = ({
   const popupRoot = createRoot(popupNode);
   const icon = layersIconsSrc[layerKey];
   const notInformed = 'Não informado';
+  const isBWC = layerKey === 'toilets';
 
   const name = properties.name
     ? String(properties.name)
@@ -104,8 +105,12 @@ const createPlacePopup = ({
       </div>
       <p className='mb-1'>Endereço: {address}</p>
       <p className='mb-1'>Horário: {openHours}</p>
-      <h4 className='mt-2'>Contato:</h4>
-      <p>{phoneNum}</p>
+      {!isBWC && (
+        <>
+          <h4 className='mt-2'>Contato:</h4>
+          <p>{phoneNum}</p>
+        </>
+      )}
     </>
   );
 
